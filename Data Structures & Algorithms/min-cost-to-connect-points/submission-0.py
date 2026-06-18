@@ -1,0 +1,33 @@
+class Solution:
+    def minCostConnectPoints(self, points: List[List[int]]) -> int:
+        adjl = {i:[0]*len(points) for i in range(len(points))}
+        for i in range(len(points)):
+            for j in range(len(points)):
+                if i==j:
+                    adjl[i][j] = [0,i]
+                    continue
+                md = abs(points[j][0]-points[i][0]) + abs(points[j][1]-points[i][1])
+                adjl[i][j] = [md, j]
+        for node in adjl:
+            adjl[node].sort()
+
+        visited = set()
+        visited.add(0)
+        cost = 0
+        heap = adjl[0][:]
+        heapq.heapify(heap)
+        while len(visited)!=len(points):
+            dis, point = heapq.heappop(heap)
+            if point in visited:
+                continue
+            cost += dis
+            visited.add(point)
+            for elem in adjl[point]:
+                heapq.heappush(heap, elem)
+
+        return cost
+
+
+        
+
+        
